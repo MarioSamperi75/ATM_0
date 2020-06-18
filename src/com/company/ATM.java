@@ -62,7 +62,7 @@ public class ATM {
 
 
 //--------------------------------------Service/Repository methods
-    //this is just hard coding: the method should let an admin charge the machine depends on an input (or many)
+    //this is just hard coding: the method should let an admin charge the machine depending on an input (or many)
     public void charging() {
         this.thousand = new Bill("Thousand", 1000, 2);
         this.fiveHundred = new Bill("Five hundred", 500, 3);
@@ -80,7 +80,7 @@ public class ATM {
         {this.totalAvailable += bill.getValue() * bill.getQuantity();}
     }
 
-    //the metod call checkcheckAvailability and eliminateBills
+    //the method calls checkAvailability and eliminateBills
     public void withdraw(int withdrawal) {
         Response response = checkAvailability(withdrawal);
         if (response.getStatus())
@@ -90,7 +90,7 @@ public class ATM {
 
     public Response checkAvailability(int withdrawal){
 
-        //preliminary checks
+        //preliminary controls
         if (withdrawal<0)
             return new Response("no negative input, please", false);    //ex. input: -300
         if (withdrawal> totalAvailable)
@@ -98,7 +98,7 @@ public class ATM {
         if ((withdrawal % 100) != 0)
             return new Response("amount not payable", false);           //ex input: 2033
 
-        //check over the availability of the bills
+        //control of the availability of the bills
         int withdrawalHundreds = getLastThreeDigits(withdrawal);
         int ATMTotalHundred = hundred.getValue() * hundred.getQuantity();
         int ATMTotalFiveHundreds =fiveHundred.getValue() * fiveHundred.getQuantity();
@@ -118,8 +118,8 @@ public class ATM {
         int left = withdrawal;
 
         while (left>=1000) {                                            //is the remaining part of withdrawal > 1000?
-            if (thousand.getQuantity() > 0) {                           //is there any 1000 bill?
-                thousand.setQuantity(thousand.getQuantity() - 1);       //"eliminate" a 1000 bill
+            if (thousand.getQuantity() > 0) {                           //is there any thousand bill?
+                thousand.setQuantity(thousand.getQuantity() - 1);       //"eliminate" a thousand-bill
                 left -= 1000;                                           // subtract 1000 from the remaining part
             } else if (fiveHundred.getQuantity() > 0) {
                 fiveHundred.setQuantity(fiveHundred.getQuantity() - 1);
@@ -130,7 +130,7 @@ public class ATM {
             }
         }
 
-        while (left>=500) {                                             //same logic, but not check on 1000 bills anymore
+        while (left>=500) {                                             //same logic, but not control on thousand-bills anymore
             if (fiveHundred.getQuantity() > 0) {
                 fiveHundred.setQuantity(fiveHundred.getQuantity() - 1);
                 left -= 500;
@@ -139,8 +139,7 @@ public class ATM {
                 left -= 100;
             }
         }
-
-        while (left>=100) {                                             //same logic, but not check on 1000 bills anymore
+        while (left>=100) {                                             //same logic, but not check on thousand-bills anymore
             if (hundred.getQuantity() > 0) {
                 hundred.setQuantity(hundred.getQuantity() - 1);
                 left -= 100;
@@ -150,7 +149,7 @@ public class ATM {
     }
 
 
-    public int getLastThreeDigits(int withdrawal) {                    //from int to string, substring, again to int
+    public int getLastThreeDigits(int withdrawal) {                    //from int to string --> substring --> again to int
         String withdrawalAsString =  Integer.toString(withdrawal);
         String lastTreeDigitsAsString = withdrawalAsString.substring(withdrawalAsString.length() - 3);
         int lastTreeDigitsAsInt = Integer.parseInt(lastTreeDigitsAsString);
